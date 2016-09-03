@@ -54,9 +54,41 @@ function get_option($quizz){
 	$option = array_slice($quizzData,3);
 	return $option;
 }
+function get_history($account){
+	$history = file("userDB/".$account."/history.txt",FILE_IGNORE_NEW_LINES);
+	return $history;
+}
 
-function get_point(){
+function get_try($history){
+	$try = count($history);
+	return $try;
+}
 
+function get_time($history){
+	$times = array();
+	for ($i=0; $i <count($history) ; $i++) { 
+		$time = explode(" ",$history[$i]);
+		array_push($times, $time[0]);
+	}
+	return $times;
+}
+
+
+function get_grades($history){
+	$grades = array();
+	for ($i=0; $i <count($history) ; $i++) { 
+		$grade = explode(" ",$history[$i]);
+		array_push($grades, $grade[1]);
+	}
+	return $grades;
+}
+
+function get_ave($history){
+	$grades = get_grades($history);
+	$try = get_try($history);
+	$sum = array_sum($grades);
+	$ave = $sum/$try;
+	return $ave;
 }
 
 ?>

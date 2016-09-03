@@ -39,8 +39,20 @@
 			$grade += 5; 
 		}
 	}
-	echo $grade;
+	
+	//get the date and grade,writo into user's history file
 	//if the user has log in, then  write into the user's history.txt
+	if(isset($_SESSION["account"])){
+		$account = $_SESSION["account"];
+		date_default_timezone_set('Asia/Shanghai');
+		$time= date('Y-m-d ',time());
+		file_put_contents("userDB/$account/history.txt", 
+			$time." ".$grade."\n",FILE_APPEND);
+	}
+	
+	$_SESSION["grade"] = $grade;
+
+	
 
 
 	// header("location:result.php")

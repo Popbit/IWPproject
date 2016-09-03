@@ -1,6 +1,7 @@
 <?php 
 	include("include/function.php");
 	session_start();
+	$account = $_SESSION["account"];
 ?>
 
 <!DOCTYPE html>
@@ -31,9 +32,23 @@
 	</header>
 
 	<div class="main-container" id="user-status">
-		<p>Hello Username !</p>
+		<p>Hello <?= get_name($_SESSION["account"])?>!</p>
 		<p>Welcome back to <span class="web-name">QuizzMe!</span></p>
-		<p id="user-status__intro">You have completed quizzes<span id="user-status__intro--times">5</span> times, and got an average of <span id="user-status__intro--average">90</span> points.</p>
+		<p id="user-status__intro">You have completed quizzes
+		<span id="user-status__intro--times">
+			<?php 
+				$history = get_history($account);
+				$try = get_try($history);
+				echo "$try";				
+			 ?>
+		</span> times, and got an average of 
+		<span id="user-status__intro--average">
+			<?php
+				$history = get_history($account);
+				$ave = get_ave($history);
+				echo "$ave";
+			?>
+		</span> points.</p>
 	</div>
 
 	<div class="main-container" id="user-action">

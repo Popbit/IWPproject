@@ -20,6 +20,6 @@
 		file_put_contents($userdb."/".$_POST["account"]."/info.txt", $_POST["full-name"]."\n");
 		file_put_contents($userdb."/".$_POST["account"]."/info.txt", $_POST["account"]."\n", FILE_APPEND);
 		file_put_contents($userdb."/".$_POST["account"]."/info.txt", $_POST["password"]."\n", FILE_APPEND);
-		$_SESSION["account"] = $_POST["account"];
+		file_put_contents($userdb."/".$_POST["account"]."/history.txt","");
 		header("location:user-menu.php");
 ?>
