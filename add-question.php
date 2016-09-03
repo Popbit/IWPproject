@@ -28,7 +28,7 @@
 		</div>
 		<ul id="head__menu">
 			<a href="#"><li class="head__menu--choice">overview</li></a>
-			<a href="logout.php"><li class="head__menu--choice">login out</li></a>
+			<a href="log"><li class="head__menu--choice">login out</li></a>
 		</ul>
 	</header>
 
@@ -46,10 +46,16 @@
 			<input type="text" name="new-classification" id="Qinput__classify--new" placeholder="What?">
 			<select name="Qclassify" id="Qinput__classify--select">
 				<option value="" disabled selected>Choose a classification</option>
-				<option value="music">Music</option>
-				<option value="history">History</option>
-				<option value="science">Science</option>
-				<option value="sport">Sport</option>
+				<?php 
+					$quizzType = file("quizzDB/quizzType.txt",FILE_IGNORE_NEW_LINES);
+ 					for($i=0; $i<count($quizzType); $i++){
+ 				?>
+ 				<option value="<?= $quizzType[$i] ?>"> 
+ 					<?= $quizzType[$i] ?>
+ 				</option>
+				 <?php
+				}
+ 				?>
 				<option value="other">Other</option>
 			</select>
 		</div>

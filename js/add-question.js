@@ -331,7 +331,7 @@
 					Array.from(inputNodeList).forEach(function (element, index) {
 						content += ""
 							+ "<label class='Qinput__option--list-node-ensure-s'>"
-								+ "<input type='radio' name='option[]' value='" + element.value.trim()
+								+ "<input type='radio' name='option[]' value='" + (index + 1)
 								+ "'/>Option " + (index + 1) + ":  " + element.value.trim()
 							+ "</label>"
 							+ "<input type='text' name='optioncontent"
@@ -353,7 +353,7 @@
 					Array.from(inputNodeList).forEach(function (element, index) {
 						content += ""
 							+ "<label class='Qinput__option--list-node-ensure-m'>"
-								+ "<input type='checkbox' name='option[]' value='" + element.value.trim()
+								+ "<input type='checkbox' name='option[]' value='" + (index + 1)
 								+ "'/>Option " + (index + 1) + ":  " + element.value.trim()
 							+ "</label>"
 							+ "<input type='text' name='optioncontent"

@@ -1,9 +1,6 @@
 <?php 
 	include("include/function.php");
 	session_start();
-	if (!isset($_SESSION["account"])) {
-		//header("location:error.php?type=nologin");
-	}
 ?>
 
 
@@ -26,99 +23,114 @@
 			<img id="head__user-info--img" src="img/user-icon.png" alt="avatar">
 			<span id="head__user-info--name">
 			<?php 
-				if (isset($_SESSION["account"])) {
+				if (isset($_SESSION["account"] )) {
+					$account = $_SESSION["account"];
 			?>
-			<?= get_name($_SESSION["account"]) ?>
-			<?php	
-				}
-				else{ ?>
-				username		
-			<?php	
-					}		
-			 ?>							
+			<?= get_name($account) ?>
+			<?php } ?>					
 			</span>
 		</div>
+		<?php 
+			if (isset($_SESSION["account"])) {
+		?>
 		<ul id="head__menu">
 			<a href="#"><li class="head__menu--choice">overview</li></a>
-			<a href="home.html"><li class="head__menu--choice">login out</li></a>
-			<li class="head__menu--choice">这个菜单只有登录状态才弹出来</li>
+			<a href="logout.php"><li class="head__menu--choice">login out</li></a>
 		</ul>
+		<?php  } ?>
 	</header>
 
-	<form action="#">
+	<form action="point.php" method="POST">
 		<div class="main-container" id="single-choice">
 			<div id="single-choice__title">Ⅰ Single choice</div>
-			<ul id="single-choice__list">
-				<li>
-					<div class="single-choice__question-title">
-						<p class="single-choice__question-title--content"><span class="single-choice__question-title--question-order">Q1</span>question title<span class="single-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="single-choice__option-list">
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice1" value="option1"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice1" value="option2"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice1" value="option3"><span class="single-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-				<li>
-					<div class="single-choice__question-title">
-						<p class="single-choice__question-title--content"><span class="single-choice__question-title--question-order">Q2</span> question title<span class="single-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="single-choice__option-list">
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice2" value="option1"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice2" value="option2"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice2" value="option3"><span class="single-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-				<li>
-					<div class="single-choice__question-title">
-						<p class="single-choice__question-title--content"><span class="single-choice__question-title--question-order">Q3</span> question title<span class="single-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="single-choice__option-list">
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice3" value="option1"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice3" value="option2"><span class="single-choice__option-list--content">option</span></label>
-						<label class="single-choice__option-list--label"><input type="radio" class="single-choice__option-list--radio" name="single-choice3" value="option3"><span class="single-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-			</ul>
+			<?php
+				$quizzType = "single"; 
+				$typePath = typePath($quizzType);
+				$randomQuizz = get_quizz($typePath);
+				// $recordPath = "userDB/$account/$quizzType/*";
+				// $recordNum = count(glob($recordPath));
+				for($num=0; $num<count($randomQuizz); $num++) {
+					$classify = get_classify($randomQuizz[$num]);
+					$title = get_title($randomQuizz[$num]);
+					$option = get_option($randomQuizz[$num]);
+					$answer = get_answer($randomQuizz[$num]);
+					$quizzNUM = $num+1;
+			?>
+			<input type="hidden" name="singleInfo<?= $num ?>" value="<?=$randomQuizz[$num]?>">
+			<input type="hidden" name="singleAns<?= $num ?>" value="<?= $answer?>">
+			<div class="single-choice__question-title">
+			<p class="single-choice__question-title--content">
+			<span class="single-choice__question-title--question-order">
+				<?= "$quizzNUM" ?>
+			</span>
+			<?= $title ?>
+			<span class="single-choice__question-title--classify">
+				<?= $classify ?>
+			</span>
+			</p>
+			</div>
+				<div class="single-choice__>option-list">
+				<?php	
+					for($i=0 ; $i <count($option); $i++){
+				?>
+					<label class="single-choice__option-list--label">
+					<input type="radio" class="single-choice__option-list--radio" name="single-choice<?= $num?>" value="<?= $i+ 1?>">
+					<span class="single-choice__option-list--content">
+					<p><?= $option[$i] ?></p>
+					</span>
+					</label>
+			<?php
+					}
+			?>
+				</div>
+			<?php
+					}
+			?>	
 		</div>
 
 		<div class="main-container" id="multiple-choice">
 			<div id="multiple-choice__title">Ⅱ Multiple choice</div>
-			<ul id="multiple-choice__list">
-				<li>
-					<div class="multiple-choice__question-title">
-						<p class="multiple-choice__question-title--content"><span class="multiple-choice__question-title--question-order">Q1</span>question title<span class="multiple-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="multiple-choice__option-list">
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice1" value="option1" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice1" value="option2" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice1" value="option3" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice1" value="option4" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-				<li>
-					<div class="multiple-choice__question-title">
-						<p class="multiple-choice__question-title--content"><span class="multiple-choice__question-title--question-order">Q2</span>question title<span class="multiple-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="multiple-choice__option-list">
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice2" value="option1" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice2" value="option2" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice2" value="option3" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice2" value="option4" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-				<li>
-					<div class="multiple-choice__question-title">
-						<p class="multiple-choice__question-title--content"><span class="multiple-choice__question-title--question-order">Q3</span>question title<span class="multiple-choice__question-title--classify">question classification</span></p>
-					</div>
-					<div class="multiple-choice__option-list">
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice3" value="option1" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice3" value="option2" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice3" value="option3" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-						<label class="multiple-choice__option-list--label"><input type="checkbox" name="multiple-choice3" value="option4" class="multiple-choice__option-list--checkbox"><span class="multiple-choice__option-list--content">option</span></label>
-					</div>
-				</li>
-			</ul>
+			<?php
+				$quizzType = "multiple"; 
+				$typePath = typePath($quizzType);
+				$randomQuizz = get_quizz($typePath);
+				for($num=0; $num<count($randomQuizz); $num++) {
+					$classify = get_classify($randomQuizz[$num]);
+					$title = get_title($randomQuizz[$num]);
+					$option = get_option($randomQuizz[$num]);
+					$answer = get_answer($randomQuizz[$num]);
+					$quizzNUM = $num+1;
+			?>
+			<input type="hidden" name="multiInfo<?= $num ?>" value="<?=$randomQuizz[$num]?>">
+			<input type="hidden" name="multiAns<?= $num ?>" value="<?= $answer?>">
+			<div class="multiple-choice__question-title">
+			<p class="multiple-choice__question-title--content">
+			<span class="multiple-choice__question-title--question-order">
+				<?= "$quizzNUM" ?>
+			</span>
+			<?= $title ?>
+			<span class="single-choice__question-title--classify">
+				<?= $classify ?>
+			</span>
+			</p>
+			</div>
+			<div class="multiple-choice__>option-list">
+				<?php	
+					for($i=0 ; $i <count($option); $i++){
+				?>
+					<label class="multiple-choice__option-list--label">
+					<input type="checkbox" class="multiple-choice__option-list--checkbox" name="multiple-choice<?= $num?>" value="<?= $i+ 1?>">
+					<span class="multiple-choice__option-list--content">
+					<p><?= $option[$i] ?></p>
+					</span>
+					</label>
+			<?php
+					}
+			?>
+			</div>
+			<?php
+					}
+			?>	
 		</div>
 
 		<div class="main-container" id="check-msg">
