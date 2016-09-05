@@ -56,7 +56,6 @@
 					editClassName("id", "Qinput__type", "uninput-section", "delete");
 					return true;
 				}
-				break;
 			case "classify":
 				var classifySelect = document.getElementById("Qinput__classify--select");
 				var newInput = document.getElementById("Qinput__classify--new");
@@ -75,7 +74,6 @@
 					editClassName("id", "Qinput__classify--new", "uninput-section", "delete");
 					return true;
 				}
-				break;
 			case "title":
 				var titleText = document.getElementById("Qinput__title--content");
 
@@ -87,7 +85,6 @@
 					editClassName("id", "Qinput__title", "uninput-section", "delete");
 					return true;
 				}
-				break;
 			case "option":
 				var option = document.querySelectorAll("#Qinput__option--list input");
 				var isInput = true;
@@ -106,7 +103,6 @@
 				}else {
 					return false;
 				}
-				break;
 			case "ensureoption":
 				var confirmButton = document.getElementById("Qinput__option--ensure");
 				var radioSingle = document.querySelector("#Qinput__type--labels input");

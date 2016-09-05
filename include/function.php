@@ -86,9 +86,11 @@ function get_grades($history){
 function get_ave($history){
 	$grades = get_grades($history);
 	$try = get_try($history);
-	$sum = array_sum($grades);
-	$ave = $sum/$try;
-	return $ave;
+	if($try!=0){
+		$sum = array_sum($grades);
+		$ave = $sum/$try;
+		return $ave;
+	}
 }
 
 ?>

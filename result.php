@@ -1,35 +1,86 @@
+<?php
+	include("include/function.php");
+	session_start();
+	if(isset($_SESSION["account"])){
+		$account = $_SESSION["account"];
+	}
+	$grade = $_SESSION["grade"];
+?>
+
 <!DOCTYPE html>
-<html lang="en">  <!-- "zh-cn" for Chinese, "en" for English -->
+<html lang="en">
+<!-- "zh-cn" for Chinese, "en" for English -->
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Home - QuizzMe!</title>
+	<title>Result - QuizzMe!</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<link href="css/main.css" rel="stylesheet">
-	<link href="css/home.css" rel="stylesheet">
+	<link href="css/result.css" rel="stylesheet">
 </head>
-<body>
 
+<body>
 	<header>
 		<img id="head__logo--img" src="img/logo.png" alt="logo" height="50px">
-		<span class="head__login" id="head__login--signin"><img src="img/user-sign.png"><span>Sign in</span></span>
-		<span class="head__login" id="head__login--signup"><img src="img/user-sign.png"><span>Sign up</span></span>
+		<div id="head__user-info">
+			<img id="head__user-info--img" src="img/user-icon.png" alt="avatar">
+			<span id="head__user-info--name">
+			<?php
+			if(isset($_SESSION["account"])){
+				echo get_name($_SESSION["account"]);
+			}
+			else{
+				echo "Guest";
+			}
+			?>
+			</span>
+		</div>
+		<?php
+			if (isset($_SESSION["account"])) {
+		?>
+		<ul id="head__menu">
+			<a href="user-menu.php">
+				<li class="head__menu--choice">overview</li>
+			</a>
+			<a href="logout.php">
+				<li class="head__menu--choice">login out</li>
+			</a>
+		</ul>
+		<?php  
+			}
+		?>
 	</header>
 
-	<div class="main-container" id="welcome__intro">
-		 	<h1 id="welcome__intro--title">Welcome to <span class="web-name">QuizzMe!</span></h1>
-		 	<p><span class="web-name">QuizzMe!</span>is an application to do Single and Multiple Choice Question quizzes online in various topics. You can test your knowledge by making quizzes but it can also supply new questions and store them in the database.</p>
-		 	<p>Now, you can sign up and complete a quiz, and the result will save in the server, that you will be able to check your score with your account later.</p>
+	<div class="main-container" id="notice">
+		<h1>Congratulations!</h1>
+		<p>You got <span class="score"><?= $grade ?></span> in this quiz !</p>
 	</div>
-
-	<div class="main-container" id="user-action">
-		<p id="user-action__msg">You can also start a quick quiz without login:<a href="quizzGuest.php"  class="welcome__link">Quick quiz</a></p>
+	<?php
+	if(isset($_SESSION["account"])){
+	?>
+	<div class="main-container" id="tips1">
+		<p>
+			Your score have been automatically saved, you can check them at any time in
+			<a href="history.php">view history</a>.
+		</p>
 	</div>
+	<?php
+		}else{
+	?>
+	<div class="main-container" id="tips2">
+		<p>
+			You have not login, your score will not be saved. If you want to save your score to check them later, just
+			<span class="sign-link" id="signin-link">sign in</span>. If you don't have a <span class="web-name">QuizzMe!</span>account,
+			 you can <span class="sign-link" id="signup-link">sign up</span> and get an account.
+		</p>
+	</div>
+	<?php } ?>
 
 	<div class="form-hidden">
-		<form action="signup_form.php" id="signup__form" method="POST">
+		<form action="signup-result.php" id="signup__form" method="POST">
 			<p class="close-icon close">×</p>
 			<p id="signup__form--title">Join <img src="img/logo-blue.png"> today.</p>
 			<input type="text" name="full-name" placeholder="Full name" required>
@@ -44,7 +95,7 @@
 	</div>
 
 	<div class="form-hidden">
-		<form action="signin_form.php" id="signin__form" method="POST">
+		<form action="signin-result.php" id="signin__form" method="POST">
 			<p class="close-icon close">×</p>
 			<div id="signin__form--logo"><img src="img/logo-blue.png" alt="QuizzMe!"></div>
 			<input type="text" name="account" placeholder="Account name" id="signinaccount" required>
@@ -59,10 +110,9 @@
 
 	<div id="errornum" hidden><?= $_GET["error"] ?></div>
 
-	<footer>
-		<p>It's a project of IWP. &copy; ZhouyangYifan TangPeixian QiXuebin</p>
-	</footer>
 
-	<script type="text/javascript" src="js/home.js"></script>
+	<script src="js/menu.js" type="text/javascript"></script>
+	<script src="js/result.js" type="text/javascript"></script>
 </body>
+
 </html>
